@@ -17,6 +17,7 @@ set(PROJECT_NAME cppconfig)
 set(APP_BOOST_DIR $ENV{BOOST_ROOT})
 set(APP_SAMPLES_DIR ./samples)
 set(APP_SOURCE_DIR ./src)
+set(APP_INCLUDE_DIR ./inc)
 
 # source files
 file(GLOB_RECURSE APP_SOURCE_FILES ${APP_SOURCE_DIR}/*.cpp)
@@ -25,13 +26,14 @@ file(GLOB_RECURSE APP_SOURCE_FILES ${APP_SOURCE_DIR}/*.cpp)
 project(${PROJECT_NAME} VERSION 1.0)
 add_library(${PROJECT_NAME} SHARED ${APP_SOURCE_FILES})
 target_compile_definitions(${PROJECT_NAME} PRIVATE CPPCONFIG_EXPORTS)
-target_include_directories(${PROJECT_NAME} PRIVATE ${APP_BOOST_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${APP_BOOST_DIR}
+                                           PRIVATE ${APP_INCLUDE_DIR})
 target_link_directories(${PROJECT_NAME} PRIVATE ${APP_BOOST_DIR}/stage/lib/)
 
 # samples
 if(APP_BUILD_SAMPLES)
     project(cppconfig_sample_1 VERSION 1.0)
     add_executable(cppconfig_sample_1 ${APP_SAMPLES_DIR}/cppconfig_sample_1.cpp)
-    target_include_directories(cppconfig_sample_1 PRIVATE ${APP_SOURCE_DIR})
+    target_include_directories(cppconfig_sample_1 PRIVATE ${APP_INCLUDE_DIR})
     target_link_directories(cppconfig_sample_1 PRIVATE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/)
 endif(APP_BUILD_SAMPLES)
